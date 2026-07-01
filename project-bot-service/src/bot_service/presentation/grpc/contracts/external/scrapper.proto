@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package scrapper;
+
+message ApiErrorResponse {
+  string description = 1;
+  string code = 2;
+  string exceptionName = 3;
+  string exceptionMessage = 4;
+  repeated string stacktrace = 5;
+}
+
+message EmptyData {}
+
+message RegisterChatRequest {
+  int64 chat_id = 1;
+}
+
+message DeleteChatRequest {
+  int64 chat_id = 1;
+}
+
+message GetLinksRequest {
+  int64 chat_id = 1;
+}
+
+message AddLinkRequest {
+  int64 chat_id = 1;
+  string link = 2;
+  repeated string tags = 3;
+  repeated string filters = 4;
+}
+
+message RemoveLinkRequest {
+  int64 chat_id = 1;
+  string link = 2;
+}
+
+message LinkResponse {
+  int64 id = 1;
+  string url = 2;
+  repeated string tags = 3;
+  repeated string filters = 4;
+  string last_seen_update = 5;
+}
+
+message ListLinksResponse {
+  repeated LinkResponse links = 1;
+  int32 size = 2;
+}
+
+message RegisterChatResult {
+  oneof result {
+    EmptyData data = 1;
+    ApiErrorResponse error = 2;
+  }
+}
+
+message DeleteChatResult {
+  oneof result {
+    EmptyData data = 1;
+    ApiErrorResponse error = 2;
+  }
+}
+
+message GetLinksResult {
+  oneof result {
+    ListLinksResponse data = 1;
+    ApiErrorResponse error = 2;
+  }
+}
+
+message AddLinkResult {
+  oneof result {
+    LinkResponse data = 1;
+    ApiErrorResponse error = 2;
+  }
+}
+
+message RemoveLinkResult {
+  oneof result {
+    LinkResponse data = 1;
+    ApiErrorResponse error = 2;
+  }
+}
+
+service ScrapperService {
+  rpc RegisterChat(RegisterChatRequest) returns (RegisterChatResult);
+  rpc DeleteChat(DeleteChatRequest) returns (DeleteChatResult);
+  rpc GetLinks(GetLinksRequest) returns (GetLinksResult);
+  rpc AddLink(AddLinkRequest) returns (AddLinkResult);
+  rpc RemoveLink(RemoveLinkRequest) returns (RemoveLinkResult);
+}

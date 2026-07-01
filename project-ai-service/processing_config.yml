@@ -1,0 +1,25 @@
+ai-agent:
+  processing-model: Qwen/Qwen3-4B-Instruct-2507
+  filtering:
+    stop-words:
+      - api
+      - ads
+      - promo
+    excluded-authors:
+      - user123
+    min-length: 50
+  summarization:
+    threshold: 200
+  prioritization:
+    high-keywords:
+      - critical
+      - urgent
+      - breaking
+      - security
+    low-keywords:
+      - minor
+      - typo
+      - chore
+      - docs
+  grouping:
+    window-ms: 3000

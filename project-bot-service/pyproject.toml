@@ -1,0 +1,62 @@
+[tool.poetry]
+name = "backend-academy-2026-python-template"
+version = "0.1.0"
+description = ""
+authors = ["g.tarasov <g.tarasov@tbank.ru>"]
+packages = [{ include = "bot_service", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+pydantic = "^2.12.5"
+pydantic-settings = "^2.13.1"
+aiogram = "^3.25.0"
+structlog = "^25.5.0"
+httpx = "^0.28.1"
+fastapi = "^0.135.1"
+uvicorn = "^0.41.0"
+grpcio = "^1.78.0"
+grpcio-tools = "^1.78.0"
+confluent-kafka = {extras = ["avro", "schemaregistry"], version = "^2.14.0"}
+redis = "^7.4.0"
+testcontainers = "^4.14.2"
+slowapi = "^0.1.9"
+aiomisc = "^18.0.23"
+tenacity = "^9.1.4"
+wiremock = "^2.7.0"
+pytest = "^9.0.3"
+prometheus-client = "^0.25.0"
+prometheusrock = "^0.2.0"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow",
+]
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+isort = "^5.13.2"
+ruff = "^0.6.1"
+pytest = "*"
+pytest-cov = "*"
+pytest-deadfixtures = "*"
+pytest-mock = "*"
+pytest-repeat = "*"
+pytest-asyncio = "*"
+mypy = "^1.19.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+# Расскомментируйте следующую строку, если используете Pydantic
+plugins = ['pydantic.mypy']
+allow_redefinition = true
+ignore_missing_imports = true
+no_implicit_optional = true
+strict_equality = true
+warn_unused_ignores = true
+exclude = "^(.*/)?test_[\\w]*\\.py$|conftest\\.py|tests"

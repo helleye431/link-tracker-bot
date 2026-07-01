@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package bot;
+
+message ApiErrorResponse {
+  string description = 1;
+  string code = 2;
+  string exceptionName = 3;
+  string exceptionMessage = 4;
+  repeated string stacktrace = 5;
+}
+
+message LinkUpdateRequest {
+  int64 id = 1;
+  string url = 2;
+  string description = 3;
+  repeated int64 tgChatIds = 4;
+}
+
+message EmptyData {}
+
+message SendUpdateResult {
+  oneof result {
+    EmptyData data = 1;
+    ApiErrorResponse error = 2;
+  }
+}
+
+service BotUpdatesService {
+  rpc SendUpdate(LinkUpdateRequest) returns (SendUpdateResult);
+}

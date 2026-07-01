@@ -1,0 +1,59 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: LinkTracker RAM alerts
+    folder: LinkTracker
+    interval: 1m
+    rules:
+      - uid: high_ram_usage_bot
+        title: Высокое потребление RAM — bot
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 300
+              to: 0
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              expr: process_resident_memory_bytes{job="bot"} / 1024 / 1024
+              instant: true
+
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              conditions:
+                - type: query
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    type: last
+                  evaluator:
+                    type: gt
+                    params:
+                      - 500
+                  operator:
+                    type: and
+
+        noDataState: NoData
+        execErrState: Alerting
+        for: 5m
+        annotations:
+          summary: Высокое потребление RAM сервисом bot
+          description: Сервис bot использует больше 500 МБ оперативной памяти дольше 5 минут.
+        labels:
+          severity: warning
+          service: bot
+          metric: ram
